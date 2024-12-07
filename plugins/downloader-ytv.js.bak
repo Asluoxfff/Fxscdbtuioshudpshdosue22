@@ -1,0 +1,39 @@
+// [ DOWNLOADER-YTMP4 ]
+
+const ytdl = require("node-yt-dl"); // memakai module node-yt-dl, klo blm ada install dlu module nya ini
+
+let handler = async (m, { conn, text, usedPrefix:_p, command }) => {
+/*
+kyzryzz.t.me
+Created by 𝘒𝘺𝘻𝘙𝘺𝘻𝘻 𝘟𝘋
+https://whatsapp.com/channel/0029VaRI1OB2P59cTdJKZh3q
+TITENONO LEK KO HAPUS😂
+*/
+    if (!text) return m.reply(`[❗] Linknya?\nContoh: ${_p + command} https://youtu.be/YYgdekCbapg?si=m-wsRmgnIwcB6CDp`);
+    m.reply(wait);
+
+(async() => { 
+await ytdl.mp4(text).then((result) =>  {
+        const title = result.title;
+        let url = result.media;
+        
+            conn.sendMessage(m.chat, {
+                video: {
+                    url:url
+                },
+                caption: `\`${title}\`\n\n` + wm
+            }, {
+                quoted: m
+            })
+   console.log(result)
+}).catch((error) => {
+   m.reply('[❗] Error: ' + error)
+  })
+})()
+};
+
+handler.help = ["ytmp4"];
+handler.tags = ["downloader"];
+handler.command = ["ytmp4", "ytv", "ytvideo"];
+
+module.exports = handler;

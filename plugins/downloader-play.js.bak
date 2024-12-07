@@ -1,0 +1,51 @@
+const axios = require("axios"); //<- User Cjs
+//import axios from 'axios' <- User Esm
+const yts = require('yt-search');
+
+let handler = async (m, { conn, text }) => {
+               if (!text) return m.reply(command + ' Utopia')
+   
+      let url = await yts(text)
+    
+    let yt = url.videos[Math.floor(Math.random() * url.videos.length)]
+ let audi = `${yt.url}`
+  
+      let botku = `YOUTUBE PLAY\n\n∘ Title:  ${yt.title} \n∘ Duration: ${yt.duration} \n∘ Views: ${~yt.views} \n∘ Id: ${yt.videoId} \n∘ Upload: ${yt.ago} \n∘ Url: ${yt.url}`
+   
+      await conn.sendMessage(m.chat, {
+                    text: botku,
+                    contextInfo: {
+                        externalAdReply: {
+                            showAdAttribution: true,
+                            title: "YOUTUBE PLAY",
+                            body: "ALUXI - MD",
+                            thumbnailUrl: yt.image,
+                            sourceUrl: '-',
+                            mediaType: 1,
+                            renderLargerThumbnail: true
+                        }
+                    }
+                }, {
+                    quoted: m
+                });
+            let {
+                data
+            } = await axios.get("https://api.botwa.space/api/ytmp3?url=" + audi + "&apikey=fFUzSrI1ZcD3").catch((e) => e.response);
+            if (!data.result) return m.reply("Failed Download audio !")
+            
+
+
+            await conn.sendMessage(m.chat, {
+                audio: {
+                    url: data.result.media
+                },
+                mimetype: "audio/mp4"
+            }, {
+                quoted: m
+            });
+        
+    }
+handler.help = handler.command = ['play'];
+handler.tags = ['downloader'];
+
+module.exports = handler;
